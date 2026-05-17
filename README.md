@@ -61,3 +61,37 @@ Due to the massive scale of the constraints ($N = 200,000$, $M$ up to millions),
 Use the provided Python script to generate a valid, highly clustered test graph.
 ```bash
 python generator.py
+
+### Step 2: Compile the C++ Solver
+Ensure you compile with the `-O3` flag. This applies maximum execution optimizations, which is standard for competitive programming judges and drastically speeds up the exact solver.
+
+```bash
+g++ -O3 solution.cpp -o solution
+```
+
+### Step 3: Execute and Redirect Output
+To prevent the terminal from lagging while printing up to 100,000 chosen coders, use input/output redirection (`<` and `>`) to read directly from the test file and write the answer to a new text file.
+
+**For Windows (Command Prompt):**
+```cmd
+solution.exe < massive_test.txt > final_answer.txt
+```
+
+**For Windows (PowerShell with Execution Timer):**
+If you want to measure the exact execution time while safely routing the output, wrap a CMD call inside `Measure-Command`:
+```powershell
+Measure-Command { cmd /c '.\solution.exe < massive_test.txt > final_answer.txt' }
+```
+
+**For Linux / Mac:**
+```bash
+time ./solution < massive_test.txt > final_answer.txt
+```
+
+> ⚠️ **Note:** The program will intentionally utilize its global runtime budget to maximize the heuristic score on macro components. Do not close the window while the terminal cursor is blinking!
+
+### Step 4: View the Results
+Once the script finishes executing, open the newly created `final_answer.txt` file in your directory. The output will be structured as follows:
+
+* **Line 1:** Your ultimate Maximum Skill Score (often reaching into the trillions for massive datasets).
+* **Line 2:** A space-separated list of selected, conflict-free coder IDs, sorted in ascending order.
