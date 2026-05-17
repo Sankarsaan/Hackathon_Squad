@@ -9,7 +9,7 @@ This solver circumvents mathematical impossibility by implementing a highly opti
 
 ---
 
-## 🏗️ Algorithm Architecture
+##  Algorithm Architecture
 
 The solver operates in four distinct phases to shrink, shatter, and dynamically solve the graph.
 
@@ -28,12 +28,12 @@ Before any heavy computation begins, we prune the graph (reduce it to a "kernel"
 ### Phase 3: Dynamic Component Solving
 The algorithm processes each isolated component independently, dynamically choosing the optimal strategy based on the component's size.
 
-#### Sub-Phase 3A: Exact Branch-and-Bound (Micro Components $\le 15$ nodes)
+#### Sub-Phase 3A: Exact Branch-and-Bound (Micro Components $\le 26$ nodes)
 For small components, we compute the 100% mathematically perfect score using a recursive search tree, accelerated by heavy pruning.
 * **Upper Bound Pruning (Weighted Clique Cover):** We group the remaining available coders into cliques. Since you can only pick a maximum of **one** node from any clique, the sum of their max weights acts as an absolute mathematical ceiling. If `current_score + upper_bound <= best_found_score`, we prune that branch of the search tree.
 * **Smart Branching:** We always branch on the node with the highest dynamic degree, removing the most heavily-conflicted node to shrink the remaining graph as fast as possible.
 
-#### Sub-Phase 3B: Hybrid Iterated Local Search (Macro Components $> 15$ nodes)
+#### Sub-Phase 3B: Hybrid Iterated Local Search (Macro Components $> 26$ nodes)
 Massive components are solved using the **HILS heuristic**, dynamically allocating the remaining time from the global 295-second budget.
 * **$(w, 1)$-swaps:** If a non-team coder's skill is higher than the *combined* skill of their team-member rivals, we swap them in and kick the rivals out.
 * **$(1, 2)$-swaps:** If adding Coder X requires kicking Coder Y, the algorithm checks if it can *also* add Coder Z. If $w(X) + w(Z) > w(Y)$, it executes a 2-for-1 trade.
@@ -44,7 +44,7 @@ Once the 295-second execution limit is reached, the algorithm aggregates the sel
 
 ---
 
-## 🚀 Performance Metrics
+##  Performance Metrics
 * **Time Complexity:** * Kernelization: $\approx O(N + M)$ 
   * Exact Solver: $O(2^K)$ strictly bounded to small $K$.
   * HILS Heuristic: $O(\text{Time Limit})$ execution bounded by `<chrono>`.
@@ -53,7 +53,7 @@ Once the 295-second execution limit is reached, the algorithm aggregates the sel
 
 ---
 
-## 🛠️ How to Run and Test
+##  How to Run and Test
 
 Due to the massive scale of the constraints ($N = 200,000$, $M$ up to millions), standard terminal outputs will lag or crash if forced to print the entire array at once. Follow these steps to generate test cases, compile, and safely save the output to a file.
 
@@ -61,20 +61,21 @@ Due to the massive scale of the constraints ($N = 200,000$, $M$ up to millions),
 Use the provided Python script to generate a valid, highly clustered test graph.
 ```bash
 python generator.py
+```
 
 ### Step 2: Compile the C++ Solver
 Ensure you compile with the `-O3` flag. This applies maximum execution optimizations, which is standard for competitive programming judges and drastically speeds up the exact solver.
 
 ```bash
 g++ -O3 solution.cpp -o solution
-```
+
 
 ### Step 3: Execute and Redirect Output
 To prevent the terminal from lagging while printing up to 100,000 chosen coders, use input/output redirection (`<` and `>`) to read directly from the test file and write the answer to a new text file.
 
 **For Windows (Command Prompt):**
 ```cmd
-solution.exe < massive_test.txt > final_answer.txt
+.\solution.exe < massive_test.txt > final_answer.txt
 ```
 
 **For Windows (PowerShell with Execution Timer):**
@@ -88,7 +89,7 @@ Measure-Command { cmd /c '.\solution.exe < massive_test.txt > final_answer.txt' 
 time ./solution < massive_test.txt > final_answer.txt
 ```
 
-> ⚠️ **Note:** The program will intentionally utilize its global runtime budget to maximize the heuristic score on macro components. Do not close the window while the terminal cursor is blinking!
+>  **Note:** The program will intentionally utilize its global runtime budget to maximize the heuristic score on macro components. Do not close the window while the terminal cursor is blinking!
 
 ### Step 4: View the Results
 Once the script finishes executing, open the newly created `final_answer.txt` file in your directory. The output will be structured as follows:
