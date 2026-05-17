@@ -200,7 +200,7 @@ int main() {
     mt19937 rng(1337);
     
     for (const auto& comp : components) {
-        if (comp.size() <= 40) {
+        if (comp.size() <= 26) { //2^26 is close to 10^8 so can be solved within 1 sec to get the exact solution of that component
             // --------------------------------------
             // SUB-PHASE A: Exact Solver
             // --------------------------------------
